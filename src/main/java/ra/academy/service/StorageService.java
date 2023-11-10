@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,12 +18,14 @@ import java.util.List;
 @Service
 public class StorageService {
     @Autowired
+    private ServletContext servletContext;
+    @Autowired
     private Storage storage;
     private final String bucketName = "fir-upload-firebase-96e90.appspot.com"; // tên bucket
-    private String pathUpload = "C:\\Users\\hung1\\OneDrive\\Desktop\\upload-firebase\\src\\main\\webapp\\uploads\\";
 
     public String uploadFile(MultipartFile file){
-        File uploadFolder = new File(pathUpload);
+        String pathUpload = servletContext.getRealPath("/");
+        File uploadFolder = new File(pathUpload+"/uploads");
         if (!uploadFolder.exists()){
             uploadFolder.mkdirs();
         }
